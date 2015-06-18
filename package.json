@@ -1,0 +1,17 @@
+{
+ "name": "alldone",
+  "longname": "alldone.io",
+  "namespace": "com.alldone.desktop",
+  "version": "0.1",
+  "description": "alldone.io client",
+  "author": "alldone.io",
+  "sources": {
+    "directory":"."
+  },
+  "icon": {
+    "osx":["./icon.png"],
+    "windows":["./icon.png"]
+  },
+  "main": "./main.js",
+  "copyright": "2015 alldone.io"
+}
