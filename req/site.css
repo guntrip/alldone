@@ -1,0 +1,115 @@
+body {
+	margin:0;
+	font-family: 'Roboto', sans-serif;
+}
+
+div.header {
+	padding:15px;
+	background-color:#957f9a;
+	color:#fff;
+	
+}
+
+div.header a.logo {
+	font-weight:bold;
+	font-size:2em;
+	color:#fff;
+	text-decoration: none;
+}
+
+div.header a.logo:hover {
+	font-weight:bold;
+}
+
+div.header .tools {
+	float:right;
+	text-align:right;
+}
+
+div.header .tools a {
+	color:#e6d6ea;
+	text-decoration:none;
+}
+
+div.header .tools a:hover {
+	color:#fff;
+}
+
+nav {
+	padding:5px;
+	padding-left:15px;
+	background-color:#583a5f;
+	color:#fff;
+}
+
+nav a {
+	color:#fff;
+	margin-right:10px;
+	text-decoration: none;
+}
+
+.content {
+	padding:5px;
+}
+
+.nicebox {
+	padding:5px;
+	margin:5px;
+	border:1px dashed #af74bd;
+}
+
+ul.listlist {
+	padding:0;
+}
+
+ul.listlist li {
+
+	padding:5px;
+	list-style-type: none;
+ 	border-bottom:1px solid #ccc;
+ 	line-height:16px;
+ 	overflow: hidden;
+}
+
+ul.listlist li:last-child {
+ 	border-bottom:none;
+ }
+
+ul.listlist a {
+	margin:5px;
+	color:#000;
+	font-weight:bold;
+	text-decoration: none;
+}
+
+ul.listlist a:hover { text-decoration: underline; }
+
+form {
+	padding:5px;
+}
+
+form div {
+	padding:5px;
+}
+
+form label {
+	display:inline-block;
+	width:150px;
+}
+
+.footer {
+	border-top:1px solid #d8c6dc;
+	padding:10px 5px;
+}
+
+.footer a {
+	font-size:0.85em;
+	text-decoration:none;
+	color:#000;
+	display:inline-block;
+	margin-right:10px;
+}
+
+.footer a:hover {
+	text-decoration: underline;
+}
