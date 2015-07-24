@@ -33,13 +33,15 @@ $( window ).resize(function() {
  				   editmode:false,
  				  };
 
- var session=0,this_user=-1;
+var vert_indent = 40;
+
+var session=0,this_user=-1;
 
 var first_load=false, thar_be_magic=false, load_from_var=false, public_use=false, read_only=false;
 
- var callbacks=[],redrawing=[];
+var callbacks=[],redrawing=[];
 
- var todo_blank = {title:'',
+var todo_blank = {title:'',
  				   unique:0,
  				   tags:{},
  				   details:'',
@@ -186,8 +188,19 @@ function draw_list(crumbs) {
 
 	var text_bc=textualize_breadcrumbs(crumbs);
 
+	var ulClass='horizontal', ulStyle='';
+
+	if (user_options.mode==='vertical') {
+		ulClass='vertical';
+		ulStyle='margin-left: '+(vert_indent * crumbIndex)+'px;';
+	}
+
+	console.log('getting:');
+					console.log(crumbs);
+					console.log(crumbs.length);
+
 	// Draws list at the level it is handed.
-	var html = "<ul class=\"list\" id=\"crumbs-"+(crumbIndex)+"\" breadcrumbs=\""+text_bc+"\">";
+	var html = "<ul class=\"list "+ulClass+"\" style=\""+ulStyle+"\" id=\"crumbs-"+(crumbIndex)+"\" breadcrumbs=\""+text_bc+"\">";
 
 	// Draw header
 	if (crumbIndex===0) {
@@ -229,6 +242,10 @@ function draw_list(crumbs) {
 		//html += "<input type=\"checkbox\"";
 		//if (item.done) { html += " checked"; }
 		//html += "> ";
+
+		console.log('loop '+i);
+		console.log(crumbs.length);
+					console.log(crumbs);
 
 		if (item.editing) {
 			//html += '<input class=\"edit\" value=\"'+item.title+'\">';			
@@ -277,6 +294,42 @@ function draw_list(crumbs) {
 
 		html += "</li>";
 
+		// Are we in vertical mode, and is this one.. open?
+		if (user_options.mode=='vertical') {
+
+			if (isNumber(redrawing[crumbIndex])) { // the level of the breadcrumbs we're at
+				if ((redrawing[crumbIndex]===i)) { // does it match this index?
+
+
+					console.log(crumbs.length);
+					console.log(crumbs);
+					// Build next level, will html-a-lize the 
+					// last set of breadcrumbs given.
+					if (crumbs.length===0) {
+						var currCrumbs=[];
+					} else {
+						var currCrumbs = clone_item(crumbs);
+					}
+
+					//console.log(crumbs);
+					//console.log(open_breadcrumbs[crumbIndex]);
+					
+					
+					currCrumbs.push(redrawing[crumbIndex]);
+
+					console.log('sending:');
+					console.log(currCrumbs);
+
+					html += '<li>';
+					if (!blahblahblah) { html += draw_list(currCrumbs); blahblahblah=true; }
+					else { console.log('trying again!'); }
+					html += '</li>';
+
+				}
+			}
+
+		}
+
 	}
 
 	// Draw new
@@ -286,8 +339,8 @@ function draw_list(crumbs) {
 		html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <textarea class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\" rows=1></textarea></li>";
 	}
 
-
 	html += "</ul>";
+
 
 	return html;
 
