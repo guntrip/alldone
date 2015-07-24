@@ -121,6 +121,17 @@ function settings_dialog_gen() {
 
 	var obj={}, html='';
 
+		// Display mode
+		html += '<div class=fieldset>';
+		html += '<label>Mode</label>';
+		html += '<select id=\"modeselect\">';
+
+			html += "<option value=\"horizontal\""+selected_if_true("horizontal",user_options.mode)+">Horizontal</option>";
+			html += "<option value=\"vertical\""+selected_if_true("vertical",user_options.mode)+">Vertical</option>";
+
+		html += "</select>";
+		html += '</div>';
+
 		// Scheme
 		html += '<div class=fieldset>';
 		html += '<label>Scheme</label>';
@@ -156,6 +167,9 @@ function settings_dialog_save() {
 
 	var check = $('#colourscheme').val();
 	user_options.colourscheme=check;
+
+	var check = $('#modeselect').val();
+	user_options.mode=check;console.log(check);
 
 	check = $('#editing').val();
 	if (check=='click') {
