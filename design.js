@@ -16,6 +16,20 @@ function sizeup() {
 		var count = $('ul').length;
 		$('#wrapper').width( count * newWidth );
 
+		if ($('body').hasClass('vertical')) {
+			$('body').removeClass('vertical');
+		}
+
+	}
+
+	if (user_options.mode==='vertical') {
+
+		var newWidth = ($(window).width());
+
+		if (!$('body').hasClass('vertical')) {
+			$('body').addClass('vertical');
+			$('#wrapper').width('100%');
+		}
 	}
 
 	// inputs
@@ -23,6 +37,7 @@ function sizeup() {
 	$('input.edit, input.new').width(inputWidth-50); // allow for the icon!
 	$('textarea.edit, textarea.new').width(inputWidth);
 	$('li label').width(inputWidth);
+
 }
 
 

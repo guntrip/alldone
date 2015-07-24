@@ -139,6 +139,7 @@ function settings_dialog_gen() {
 
 			html += "<option value=\"slate\""+selected_if_true("slate",user_options.colourscheme)+">Slate</option>";
 			html += "<option value=\"purple\""+selected_if_true("purple",user_options.colourscheme)+">Purple</option>";
+			html += "<option value=\"vertbw\""+selected_if_true("vertbw",user_options.colourscheme)+">B&amp;W vertical</option>";
 
 		html += "</select>";
 		html += '</div>';
