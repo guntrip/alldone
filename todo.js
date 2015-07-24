@@ -8,7 +8,17 @@
  *	- allow linking of remote stylesheets for colour schemes.
  *
  *	- small adverts until payment of anything over £1/lower. Bitcoin. Reddit Gold.
- *
+ *	
+ *	---- referencing in JS:
+ *		
+ *		id: <ul id=crumbs-X> and <li id=item-X-Y>
+ 			-- X is the level of <ul>s this stands at. From crumbs-0 for the main list and up.
+ 			-- Y is the index within a list.
+
+ 		breadcrumbs: <ul breadcrumbs=x-3-5> <li breadcrumbs=x-3-5-1>
+ 			-- actual full location within the json object
+ 			-- useful for for linking an event with the data but unhelpful
+ 			   as cannot be referenced.
  *
  */
 
@@ -195,9 +205,6 @@ function draw_list(crumbs) {
 		ulStyle='margin-left: '+(vert_indent * crumbIndex)+'px;';
 	}
 
-	console.log('getting:');
-					console.log(crumbs);
-					console.log(crumbs.length);
 
 	// Draws list at the level it is handed.
 	var html = "<ul class=\"list "+ulClass+"\" style=\""+ulStyle+"\" id=\"crumbs-"+(crumbIndex)+"\" breadcrumbs=\""+text_bc+"\">";
@@ -238,14 +245,79 @@ function draw_list(crumbs) {
 		
 		var item = drawList[i];
 		
-		html += "<li id=\"item-"+crumbIndex+"-"+i+"\" breadcrumbs=\""+text_bc+"-"+i+"\">";
+		html += draw_list_item(item, crumbIndex, i, text_bc, crumbs);
+
+		// Are we in vertical mode, and is this one.. open?
+		if (user_options.mode=='vertical') {
+
+			if (isNumber(redrawing[crumbIndex])) { // the level of the breadcrumbs we're at
+				if ((redrawing[crumbIndex]===i)) { // does it match this index?
+
+					// Making this a recursive function was painful, we 
+					// now hand over to draw_list_vertical_sub() to do
+					// the next bit
+
+					html += draw_list_vertical_sub(item, i, crumbIndex, text_bc, crumbs);
+
+					/*console.log(crumbs.length);
+					console.log(crumbs);
+					// Build next level, will html-a-lize the 
+					// last set of breadcrumbs given.
+					if (crumbs.length===0) {
+						var currCrumbs=[];
+					} else {
+						var currCrumbs = clone_item(crumbs);
+					}
+
+					//console.log(crumbs);
+					//console.log(open_breadcrumbs[crumbIndex]);
+					
+					
+					currCrumbs.push(redrawing[crumbIndex]);
+
+					console.log('sending:');
+					console.log(currCrumbs);
+
+					html += '<li>';
+					if (!blahblahblah) { html += draw_list(currCrumbs); blahblahblah=true; }
+					else { console.log('trying again!'); }
+					html += '</li>';*/
+
+				}
+			}
+
+		}
+
+	}
+
+	// Draw new
+	//html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <input class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\"></li>";
+
+	if (!read_only) {
+		//html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <textarea class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\" rows=1></textarea></li>";
+		html += draw_list_input(crumbIndex, text_bc);
+	}
+
+	html += "</ul>";
+
+
+	return html;
+
+}
+
+		// Sub functions for drawing
+		function draw_list_item(item, crumbIndex, itemIndex, text_bc, crumbs) {
+
+			/* item: json object to draw
+			   crumbIndex: how many levels we are in (for the id attr)
+			   itemIndex: where this item exists in this level (for the id attr)
+			   text_bc: the x-4-1-3 breadcrmbs. We add the itemIndex for this reference.
+			   crumbs: crumbs handed down from previous function */
+
+		var html = "<li id=\"item-"+crumbIndex+"-"+itemIndex+"\" breadcrumbs=\""+text_bc+"-"+itemIndex+"\">";
 		//html += "<input type=\"checkbox\"";
 		//if (item.done) { html += " checked"; }
 		//html += "> ";
-
-		console.log('loop '+i);
-		console.log(crumbs.length);
-					console.log(crumbs);
 
 		if (item.editing) {
 			//html += '<input class=\"edit\" value=\"'+item.title+'\">';			
@@ -294,57 +366,52 @@ function draw_list(crumbs) {
 
 		html += "</li>";
 
-		// Are we in vertical mode, and is this one.. open?
-		if (user_options.mode=='vertical') {
-
-			if (isNumber(redrawing[crumbIndex])) { // the level of the breadcrumbs we're at
-				if ((redrawing[crumbIndex]===i)) { // does it match this index?
-
-
-					console.log(crumbs.length);
-					console.log(crumbs);
-					// Build next level, will html-a-lize the 
-					// last set of breadcrumbs given.
-					if (crumbs.length===0) {
-						var currCrumbs=[];
-					} else {
-						var currCrumbs = clone_item(crumbs);
-					}
-
-					//console.log(crumbs);
-					//console.log(open_breadcrumbs[crumbIndex]);
-					
-					
-					currCrumbs.push(redrawing[crumbIndex]);
-
-					console.log('sending:');
-					console.log(currCrumbs);
-
-					html += '<li>';
-					if (!blahblahblah) { html += draw_list(currCrumbs); blahblahblah=true; }
-					else { console.log('trying again!'); }
-					html += '</li>';
-
-				}
-			}
+		return html;
 
 		}
 
-	}
+		function draw_list_input(crumbIndex, text_bc) {
+			var html = "<li class=\"static\">";
+			html += "<div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <textarea class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\" rows=1></textarea>";
+			html += "</li>";
 
-	// Draw new
-	//html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <input class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\"></li>";
+			return html;	
+		}
 
-	if (!read_only) {
-		html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <textarea class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\" rows=1></textarea></li>";
-	}
+		function draw_list_vertical_sub(item, thisIndex, crumbIndex, text_bc, crumbs) {
 
-	html += "</ul>";
+				// +1 and add references for this level. Recursive magic.
+				var crumbIndexIncrem = crumbIndex + 1, text_bcIncrem = text_bc + '-' +thisIndex, countIndex = 0;
 
+				var html = "<li id=\"vert-crumbs-"+(crumbIndexIncrem)+"\">";
 
-	return html;
+				html += "<ul class=\"list vertical\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bc+"\">";
+			
+				$.each(item.children, function (key, value) {
 
-}
+					// Draw item.
+					html += draw_list_item(this, crumbIndexIncrem, countIndex, text_bcIncrem, crumbs);
+
+					// Is this one open? We can recursively draw sublists.
+					if (isNumber(redrawing[crumbIndexIncrem])) { // the level of the breadcrumbs we're at					
+						if (redrawing[crumbIndexIncrem]===countIndex) { // does it match this index?						
+							html += draw_list_vertical_sub(this, countIndex, crumbIndexIncrem, text_bcIncrem, crumbs);
+						}
+					}
+
+					countIndex++; // keeping track of this index, important for referencing.
+				});
+
+				// Input
+				if (!read_only) {					
+					html += draw_list_input(crumbIndexIncrem, text_bcIncrem);
+				}
+
+			html += "</ul></li>";
+
+			return html;
+
+		}
 
 
 function get_breadcrumbs(crumbs) {
