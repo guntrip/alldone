@@ -1,25 +1,43 @@
 var current_hover=0, label_mousedown=false;
 /* sizeup =============================== */
-
+var blahblahblah=false;
 
 function sizeup() {
 
 	var scale_by=screenmode();
 
-	// 1/3 for individual lists
-	var newWidth = ($(window).width() / scale_by);
-	$('ul').outerWidth( newWidth );
+	if (user_options.mode!=='vertical') {
 
-	// size wrapper
-	var count = $('ul').length;
-	$('#wrapper').width( count * newWidth );
+		// 1/3 for individual lists
+		var newWidth = ($(window).width() / scale_by);
+		$('ul').outerWidth( newWidth );
 
-	
+		// size wrapper
+		var count = $('ul').length;
+		$('#wrapper').width( count * newWidth );
+
+		if ($('body').hasClass('vertical')) {
+			$('body').removeClass('vertical');
+		}
+
+	}
+
+	if (user_options.mode==='vertical') {
+
+		var newWidth = ($(window).width());
+
+		if (!$('body').hasClass('vertical')) {
+			$('body').addClass('vertical');
+			$('#wrapper').width('100%');
+		}
+	}
+
 	// inputs
 	var inputWidth=newWidth-100;
 	$('input.edit, input.new').width(inputWidth-50); // allow for the icon!
 	$('textarea.edit, textarea.new').width(inputWidth);
 	$('li label').width(inputWidth);
+
 }
 
 
@@ -45,7 +63,6 @@ function redraw(breadcrumbs) {
 
 	if (!pause_redraw) {
 
-
 		var working_breadcrumbs=[], html="";
 
 		$('body').removeClass()
@@ -58,32 +75,52 @@ function redraw(breadcrumbs) {
 		retain_forms(false);
 		retain_scroll(false);
 
-		// Top level
-		html += draw_list(working_breadcrumbs);
+		if ((user_options.mode=='horizontal')||(!user_options.mode)) {
 
-		// Draw each stage of the breadcrumbs
-		$.each(breadcrumbs, function(i, val) {
-			working_breadcrumbs.push(breadcrumbs[i]);
+			// Top level
 			html += draw_list(working_breadcrumbs);
-		});
 
-		// If we're going backwards, we might want to do some scrolling.
-		if ( (breadcrumbs.length < open_breadcrumbs.length) && (open_breadcrumbs.length>( screenmode() -1 ) ) ) { // 2, as in 3..
+			// Draw each stage of the breadcrumbs
+			$.each(breadcrumbs, function(i, val) {
+				working_breadcrumbs.push(breadcrumbs[i]);
+				html += draw_list(working_breadcrumbs);
+			});
 
-			// Set the open bread crumbs
-			open_breadcrumbs=breadcrumbs;
-			
-			// updateScroll() will update the html when done
-			updateScroll(false, breadcrumbs.length, html);
+			// If we're going backwards, we might want to do some scrolling.
+			if ( (breadcrumbs.length < open_breadcrumbs.length) && (open_breadcrumbs.length>( screenmode() -1 ) ) ) { // 2, as in 3..
+
+				// Set the open bread crumbs
+				open_breadcrumbs=breadcrumbs;
+				
+				// updateScroll() will update the html when done
+				updateScroll(false, breadcrumbs.length, html);
+
+			} else {
+
+				// Set the open bread crumbs
+				open_breadcrumbs=breadcrumbs;
+
+				//$('#wrapper').html(html);
+				redraw_finalize(html, true);
+				
+			}
 
 		} else {
 
-			// Set the open bread crumbs
-			open_breadcrumbs=breadcrumbs;
-
-			//$('#wrapper').html(html);
-			redraw_finalize(html, true);
+			// New vertical mode /!!/
+			// doesn't require horrible scrolling.
 			
+			open_breadcrumbs=breadcrumbs;
+			html += draw_list(working_breadcrumbs);
+
+			// Draw each stage of the breadcrumbs
+			/*$.each(breadcrumbs, function(i, val) {
+				working_breadcrumbs.push(breadcrumbs[i]);
+				html += draw_list(working_breadcrumbs);
+			});*/
+
+			redraw_finalize(html, true);
+
 		}
 
 	}
