@@ -106,7 +106,7 @@
 	global $this_server;
 
 		$filename=make_file_name($uid);
-		$empty=json_encode(["todo_list"=>[], "colourscheme"=>"slate"]);
+		$empty=json_encode(["todo_list"=>[], "colourscheme"=>"slate", "mode"=>"horizontal"]);
 
 		$query="INSERT INTO files (server, store, file, uri, owner) ".
 			   "VALUES('".safe($this_server["saving_server"])."', ".

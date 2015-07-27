@@ -1,15 +1,5 @@
 /*
- *	Magic to do list
- *  
- *  tick.space
- *  alldone.io <-------!!!
- *  gandi.net
- *	
- *	- allow linking of remote stylesheets for colour schemes.
- *
- *	- small adverts until payment of anything over £1/lower. Bitcoin. Reddit Gold.
- *	
- *	---- referencing in JS:
+ *  ---- referencing in JS:
  *		
  *		id: <ul id=crumbs-X> and <li id=item-X-Y>
  			-- X is the level of <ul>s this stands at. From crumbs-0 for the main list and up.
@@ -31,9 +21,6 @@ function isNumber(n) {
 $( window ).resize(function() {	
 	sizeup();
 });
-
-
-
 
  var todo_list = [], open_breadcrumbs=[], old_breadcrumbs=[], form_history=[], scroll_history=[], form_count=0;
  var recursive_fetched={}, open_edit=false, sort_mode=false, pause_redraw=false, custom_context=true;
@@ -64,89 +51,7 @@ var todo_blank = {title:'',
 
 var todo_title="list", todo_owner='';
 
-var todo_list = [{title:'Debugging', done:false},{title:'willy', done:false},
-				{title:'Marketing', done:false, children:[{title:'willy', done:false}, {title:'poo', done:false, children:[{title:'wank', done:false}, {title:'hat', done:false, children:[{title:'wank', done:false}, {title:'aaaaaa', done:false},{title:'afff', done:false}]},{title:'afff', done:false}]}]},
-				{title:'Willy', done:false},
-				{title:'Flannageddon', done:false, children:[{title:'assssss', done:false}, {title:'moooma', done:false}]}];
-
-var todo_list = [
-    {
-        "title": "1",
-        "done": false,
-        "subtext": "",
-        "tags":["wank","ham","spam"],
-        "icon": "",
-        "dateSet": 0,
-        "dateDue": 0,
-        "dateComplete": 0,
-        "children": [
-            {
-                "title": "a",
-                "done": false,
-                "subtext": "",
-                "icon": "",
-                "dateSet": 0,
-                "dateDue": 0,
-                "dateComplete": 0,
-                "children": []
-            },
-            {
-                "title": "b",
-                "done": false,
-                "subtext": "",
-                "icon": "",
-                "dateSet": 0,
-                "dateDue": 0,
-                "dateComplete": 0,
-                "children": []
-            },
-            {
-                "title": "c",
-                "done": false,
-                "subtext": "",
-                "icon": "",
-                "dateSet": 0,
-                "dateDue": 0,
-                "dateComplete": 0,
-                "children": [
-                    {
-                        "title": "arghhh#]",
-                        "done": false,
-                        "subtext": "",
-                        "icon": "",
-                        "dateSet": 0,
-                        "dateDue": 0,
-                        "dateComplete": 0,
-                        "children": []
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "title": "blah blah rarh hello blh lagh ah asjk ash asjkdh asjkdhas jkasdhasdjka asdhasasd",
-        "done": false,
-        "subtext": "",
-        "icon": "",
-        "dateSet": 0,
-        "dateDue": 0,
-        "dateComplete": 0,
-        "children": []
-    },
-    {
-        "title": "3",
-        "done": false,
-        "subtext": "",
-        "icon": "",
-        "magic": {"list":"no_github_issues","username":"rails","repo":"rails"},
-        "dateSet": 0,
-        "dateDue": 0,
-        "dateComplete": 0,
-        "children": [
-        ]
-    }
-];
-//todo_list = jQuery.parseJSON(todosample);
+var todo_list = [];
 
 function callback(set, what) {
 
@@ -259,30 +164,6 @@ function draw_list(crumbs) {
 
 					html += draw_list_vertical_sub(item, i, crumbIndex, text_bc, crumbs);
 
-					/*console.log(crumbs.length);
-					console.log(crumbs);
-					// Build next level, will html-a-lize the 
-					// last set of breadcrumbs given.
-					if (crumbs.length===0) {
-						var currCrumbs=[];
-					} else {
-						var currCrumbs = clone_item(crumbs);
-					}
-
-					//console.log(crumbs);
-					//console.log(open_breadcrumbs[crumbIndex]);
-					
-					
-					currCrumbs.push(redrawing[crumbIndex]);
-
-					console.log('sending:');
-					console.log(currCrumbs);
-
-					html += '<li>';
-					if (!blahblahblah) { html += draw_list(currCrumbs); blahblahblah=true; }
-					else { console.log('trying again!'); }
-					html += '</li>';*/
-
 				}
 			}
 
@@ -291,10 +172,7 @@ function draw_list(crumbs) {
 	}
 
 	// Draw new
-	//html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <input class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\"></li>";
-
 	if (!read_only) {
-		//html += "<li class=\"static\"><div class=\"checkbox disabled\">"+checkbox_please(false)+"</div> <textarea class=\"new\" type=\"text\" id=\"new-"+crumbIndex+"\" breadcrumbs=\""+text_bc+"\" rows=1></textarea></li>";
 		html += draw_list_input(crumbIndex, text_bc);
 	}
 
@@ -315,9 +193,6 @@ function draw_list(crumbs) {
 			   crumbs: crumbs handed down from previous function */
 
 		var html = "<li id=\"item-"+crumbIndex+"-"+itemIndex+"\" breadcrumbs=\""+text_bc+"-"+itemIndex+"\">";
-		//html += "<input type=\"checkbox\"";
-		//if (item.done) { html += " checked"; }
-		//html += "> ";
 
 		if (item.editing) {
 			//html += '<input class=\"edit\" value=\"'+item.title+'\">';			
@@ -353,11 +228,6 @@ function draw_list(crumbs) {
 			html += "<div class=\"count\">"+style_count_my_children(countDisplay)+"</div>";
 			}
 
-			/*if (item.children.length==0) {
-			html += "<div class=\""+expandCss+" empty\" title=\"empty\"><i class=\"fa fa-arrow-"+arrowDir+"\"></i></div>"; 
-			} else {
-			html += "<div class=\""+expandCss+"\" title=\""+item.children.length+" inside\"><i class=\"fa fa-arrow-"+arrowDir+"\"></i></div>"; 
-			}*/
 		}
 
 		if ( (!user_options.editmode) && (!read_only) ) {
@@ -475,19 +345,6 @@ function style_count_my_children(count) {
 //function expand(id) {
 function expand(e) {
 
-	/*var sp = id.split("-"); //0: "item", 1: steps through breadcrumbs, 2: index on that level
-	var new_breadcrumbs=[]; //New breadcrumbs!
-	
-	// Loop through the breadcrumbs up until the parent-list.
-	for (i = 0; i < parseInt(sp[1]); i++) {
-		if ((open_breadcrumbs[i])||(open_breadcrumbs[i]===0)) { // exists or is index:0. js is shit.
-			new_breadcrumbs.push(open_breadcrumbs[i]);
-		}
-	}*/
-
-	// add the actual clicked index
-	//new_breadcrumbs.push(parseInt(sp[2]));
-
 	// Set open_breadcrumbs to be the clicked item!
 	var bc = breadcrumb_explosion($(e).attr("breadcrumbs"));
 
@@ -498,27 +355,10 @@ function expand(e) {
 
 function close(e) {
 
-
-
 	// Get bc of clicked closer, lop off one.
 	var bc = breadcrumb_explosion($(e).attr("breadcrumbs"));
 	bc.splice(-1,1);
 	redraw(bc);
-
-	/*var sp = id.split("-"); //0: "item", 1: steps through breadcrumbs, 2: index on that level
-	var new_breadcrumbs=[]; //New breadcrumbs!
-
-	console.log(id);
-	
-	// Loop up until one before this!
-	for (i = 0; i < (parseInt(sp[1])-1); i++) {
-		if ((open_breadcrumbs[i])||(open_breadcrumbs[i]===0)) { // exists or is index:0. js is shit.
-			new_breadcrumbs.push(open_breadcrumbs[i]);
-		}
-	}
-
-	// draw!
-	redraw(new_breadcrumbs);*/
 
 }
 
