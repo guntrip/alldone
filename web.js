@@ -30,6 +30,7 @@ $( window ).load(function() {
 		todo_owner = load_owner;
 
 		user_options.colourscheme = load_item.colourscheme;
+		user_options.mode = load_item.mode;
 
 		first_load=true;
 		redraw([]);
