@@ -24,7 +24,7 @@ function sizeup() {
 
 	if (user_options.mode==='vertical') {
 
-		var newWidth = ($(window).width());
+		var newWidth = ($(window).width())-(vert_indent*4);
 
 		if (!$('body').hasClass('vertical')) {
 			$('body').addClass('vertical');
@@ -36,7 +36,7 @@ function sizeup() {
 	var inputWidth=newWidth-100;
 	$('input.edit, input.new').width(inputWidth-50); // allow for the icon!
 	$('textarea.edit, textarea.new').width(inputWidth);
-	$('li label').width(inputWidth);
+	$('li label').width(inputWidth); 
 
 }
 

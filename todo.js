@@ -23,6 +23,9 @@ $( window ).resize(function() {
 });
 
  var todo_list = [], open_breadcrumbs=[], old_breadcrumbs=[], form_history=[], scroll_history=[], form_count=0;
+
+ var multi_crumbs=[]; // Allow multiple breadcrumbs to remain open.
+
  var recursive_fetched={}, open_edit=false, sort_mode=false, pause_redraw=false, custom_context=true;
 
  var user_options={fullscreen:false,
