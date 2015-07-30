@@ -1,7 +1,7 @@
 /* loadermabobs */
 var login={};
 
-var uri='http://82.8.225.110/todo/api/';
+var uri='http://82.8.225.110/alldone.io/api/';
 
 //var uri='http://www.alldone.io/api/';
 var homeuri='http://www.alldone.io/';

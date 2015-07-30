@@ -24,7 +24,7 @@ $( window ).resize(function() {
 
  var todo_list = [], open_breadcrumbs=[], old_breadcrumbs=[], form_history=[], scroll_history=[], form_count=0;
 
- var multi_crumbs=[]; // Allow multiple breadcrumbs to remain open.
+ var multi_crumbs=[]; // Allow multiple breadcrumbs to remain open in vertical mode.
 
  var recursive_fetched={}, open_edit=false, sort_mode=false, pause_redraw=false, custom_context=true;
 
@@ -101,6 +101,8 @@ function draw_list(crumbs) {
      * to be drawn in the same way, as it has no index, it is the array!
 	 */
 
+	 console.table(multi_crumbs);
+
 	// Get either root or the children of the right level!
 	var drawList = get_breadcrumbs(crumbs), crumbIndex = crumbs.length;
 
@@ -152,23 +154,30 @@ function draw_list(crumbs) {
 	for (i = 0; i < drawList.length; i++) { 
 		
 		var item = drawList[i];
+
+		var sublist = [];
+		if  (user_options.mode=='vertical') { sublist = match_sublist(multi_crumbs, i); }
 		
 		html += draw_list_item(item, crumbIndex, i, text_bc, crumbs);
 
 		// Are we in vertical mode, and is this one.. open?
 		if (user_options.mode=='vertical') {
 
+			var drawSubList=false;
+	
 			if (isNumber(redrawing[crumbIndex])) { // the level of the breadcrumbs we're at
 				if ((redrawing[crumbIndex]===i)) { // does it match this index?
+					//drawSubList=true;
+				}
+			}
+
+			if (sublist.hit) { drawSubList=true; }
 
 					// Making this a recursive function was painful, we 
 					// now hand over to draw_list_vertical_sub() to do
 					// the next bit
 
-					html += draw_list_vertical_sub(item, i, crumbIndex, text_bc, crumbs);
-
-				}
-			}
+			if (drawSubList) { html += draw_list_vertical_sub(item, i, crumbIndex, text_bc, crumbs, sublist.list); }
 
 		}
 
@@ -251,10 +260,13 @@ function draw_list(crumbs) {
 			return html;	
 		}
 
-		function draw_list_vertical_sub(item, thisIndex, crumbIndex, text_bc, crumbs) {
+		function draw_list_vertical_sub(item, thisIndex, crumbIndex, text_bc, crumbs, sublist) {
 
 				// +1 and add references for this level. Recursive magic.
 				var crumbIndexIncrem = crumbIndex + 1, text_bcIncrem = text_bc + '-' +thisIndex, countIndex = 0;
+
+				console.log('vert senrt:');
+				console.table(sublist);
 
 				var html = "<li id=\"vert-crumbs-"+(crumbIndexIncrem)+"\">";
 
@@ -265,12 +277,29 @@ function draw_list(crumbs) {
 					// Draw item.
 					html += draw_list_item(this, crumbIndexIncrem, countIndex, text_bcIncrem, crumbs);
 
+					var new_sublist = match_sublist(sublist, countIndex), drawSubList=false;
+					console.log(new_sublist);
+
 					// Is this one open? We can recursively draw sublists.
 					if (isNumber(redrawing[crumbIndexIncrem])) { // the level of the breadcrumbs we're at					
-						if (redrawing[crumbIndexIncrem]===countIndex) { // does it match this index?						
-							html += draw_list_vertical_sub(this, countIndex, crumbIndexIncrem, text_bcIncrem, crumbs);
+						if (redrawing[crumbIndexIncrem]===countIndex) { // does it match this index?	
+						//drawSubList=true;
 						}
-					}
+					}		
+
+					//debug
+					/*if(thisIndex==4) {
+						console.log('index and sent:');
+						console.log(countIndex);
+						console.table(sublist);
+						console.log('new and searched:')
+						console.table(new_sublist);
+					}*/
+
+					if (new_sublist.hit) { drawSubList=true; }
+
+					if (drawSubList) { html += draw_list_vertical_sub(this, countIndex, crumbIndexIncrem, text_bcIncrem, crumbs, new_sublist.hit); }
+					
 
 					countIndex++; // keeping track of this index, important for referencing.
 				});
@@ -285,6 +314,35 @@ function draw_list(crumbs) {
 			return html;
 
 		}
+
+function match_sublist(multi, match) {
+
+	// If we can find match at [0], then return a new
+	// multibreadcrumbs starting at the next level.
+	// this is handed down recusrively.
+
+	var multi_return = [], hit=false;
+
+	$.each(multi, function (i, val) {
+	
+		console.log(val[0]+' vs '+match);
+
+		if ( ((val[0])||(parseInt(val[0])===0)) &&( val[0]==match ) ) {
+			// chop off the first and add that.
+	
+			var n = val.slice();	
+			n.splice(0, 1);
+		
+			multi_return.push(n);
+			hit=true;
+
+		}
+
+	});
+
+	return {list: multi_return, hit:hit};
+
+}
 
 
 function get_breadcrumbs(crumbs) {
@@ -351,6 +409,13 @@ function expand(e) {
 	// Set open_breadcrumbs to be the clicked item!
 	var bc = breadcrumb_explosion($(e).attr("breadcrumbs"));
 
+	if (user_options.mode==='vertical') {
+
+		// Add to multibreadcrumbs.
+		multi_crumbs.push(bc);
+
+	}
+
 	// draw!
 	redraw(bc);
 
@@ -360,8 +425,58 @@ function close(e) {
 
 	// Get bc of clicked closer, lop off one.
 	var bc = breadcrumb_explosion($(e).attr("breadcrumbs"));
-	bc.splice(-1,1);
+
+	if (user_options.mode==='vertical') {
+
+		close_multi(bc);
+
+	} else {
+
+		bc.splice(-1,1);
+
+	}
 	redraw(bc);
+
+}
+
+function close_multi(bc) {
+
+
+	// grep through multi_crumbs
+	multi_crumbs = $.grep(multi_crumbs, function (el, i) {
+
+		// Compare with bc (the closed item's crumbs), if there's a match
+		// for the length of bc, then we remove that (return false)
+		var match = true;
+
+		for (i = 0; i < bc.length; i++) { 
+
+			if (el[i]) {
+
+				if (bc[i]!==el[i]) {
+					match=false;
+				}
+
+			} else {
+				match=false;
+			}
+
+		}
+
+	if (match) { return false; } // wonderful and clear..
+    
+    return true;
+
+	});
+
+}
+
+function array_equal(a,b) {
+
+	var is_same = (a.length == b.length) && a.every(function(element, index) {
+    return element === b[index]; } );
+
+    return is_same;
 
 }
 
