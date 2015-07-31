@@ -441,9 +441,9 @@ function assign_clicks() {
 
 
 function set_classes() {
-	$.each(open_breadcrumbs, function(i, val) {
+	/*$.each(open_breadcrumbs, function(i, val) {
 		$('#item-'+i+'-'+val).addClass('open');
-	});
+	});*/
 }
 
 /* forms and continunity =============================== */

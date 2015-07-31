@@ -468,7 +468,7 @@ body.vertical > #wrapper {
  .vertbw li .expand.empty, .vertbw li .contract.empty {color:#dfe8ec;}
 
  .vertbw li:hover { font-weight:bold; }
- .vertbw li.open {font-weight:bold;}
+ .vertbw li.open {font-weight:bold;background-color:lime;}
 
 /* app specific things */
 #dialog_list {
