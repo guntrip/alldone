@@ -1,9 +1,9 @@
 /* loadermabobs */
 var login={};
 
-var uri='http://82.8.225.110/alldone.io/api/';
+//var uri='http://82.8.225.110/alldone.io/api/';
 
-//var uri='http://www.alldone.io/api/';
+var uri='http://www.alldone.io/api/';
 var homeuri='http://www.alldone.io/';
 var update_notify_count=0;
 var runtime='none';
@@ -94,8 +94,6 @@ function alldone_update() {
 		 'owner':todo_owner,
 		 'uri':todo_title,
 		 'data':JSON.stringify(prep_data)};
-
-     console.log(prep_data);
 
   var jqxhr = $.post( uri, obj)
   .done(function( data ) {    

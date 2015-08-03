@@ -102,7 +102,6 @@ function draw_list(crumbs) {
      * to be drawn in the same way, as it has no index, it is the array!
 	 */
 
-	console.table(multi_crumbs);
 
 	// Get either root or the children of the right level!
 	var drawList = get_breadcrumbs(crumbs), crumbIndex = crumbs.length;
