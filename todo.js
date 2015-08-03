@@ -72,9 +72,10 @@ function callback(set, what) {
 					
 					setTimeout(function(){ 
 						// gives dom a chance to update, autosize fires on
-						// focus and needs a set width().
-						$('#'+value.id+' textarea.new').val(''); 
-						$('#'+value.id+' textarea.new').focus(); 
+						// focus and needs a set width().						
+						$('ul[breadcrumbs="'+value.id+'"] textarea.new').val(''); 
+						$('ul[breadcrumbs="'+value.id+'"] textarea.new').focus(); 
+						//$('#'+value.id+' textarea.new').focus(); 
 					}, 1);
 					
 				}
@@ -274,7 +275,7 @@ function draw_list(crumbs) {
 
 				var html = "<li id=\"vert-crumbs-"+(crumbIndexIncrem)+"\">";
 
-				html += "<ul class=\"list vertical\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bc+"\">";
+				html += "<ul class=\"list vertical\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bcIncrem+"\">";
 			
 				$.each(item.children, function (key, value) {
 
@@ -365,7 +366,7 @@ function match_isopen(text_bc) {
 		if (text_bc===val) { 
 			match = true;
 		}
-		
+
 	});
 
 	return match;
@@ -460,6 +461,7 @@ function close(e) {
 	} else {
 
 		bc.splice(-1,1);
+		multi_crumbs=[];
 
 	}
 	redraw(bc);
@@ -559,7 +561,7 @@ function add(e) {
 			var bc = $(e).attr("breadcrumbs");
 		
 				// grab parent for later!
-				var parent_ul=$(e).closest( "ul" ).attr("id");
+				var parent_ul=$(e).closest( "ul" ).attr("breadcrumbs");
 
 				// Set callback for focusing
 				callback(true, {method:'focus_new', id:parent_ul});	

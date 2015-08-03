@@ -456,12 +456,12 @@ function retain_forms(restore) {
 	if (!restore) {
 
 		form_history=[];
-		form_count=$('li input.new').length;
+		form_count=$('li textarea.new').length;
 
-		$('li input.new').each(function(){
-			form_history[$(this).attr("id")]={};
+		$('li textarea.new').each(function(){
+			form_history[$(this).attr("breadcrumbs")]={};
 			// Store values
-			form_history[$(this).attr("id")].title=$(this).val();
+			form_history[$(this).attr("breadcrumbs")].title=$(this).val();
        	});
 
 	}
@@ -470,10 +470,12 @@ function retain_forms(restore) {
 
 		var lastinput=0;
 
-		$('li input.new').each(function(){
+		console.table(form_history);
 
-			if (form_history[$(this).attr("id")]) {				
-				var res=form_history[$(this).attr("id")];
+		$('li textarea.new').each(function(){
+
+			if (form_history[$(this).attr("breadcrumbs")]) {				
+				var res=form_history[$(this).attr("breadcrumbs")];
 				// Return values
 				$(this).val(res.title);
 				lastinput=this;
@@ -482,7 +484,7 @@ function retain_forms(restore) {
 		});
 
 		// If there's the same number, then we should clear the last one.	
-		if ($('li input.new').length===form_count) { $(lastinput).val(''); }
+		//if ($('li input.new').length===form_count) { $(lastinput).val(''); }
 
 	}
 
