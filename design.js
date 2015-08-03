@@ -470,8 +470,6 @@ function retain_forms(restore) {
 
 		var lastinput=0;
 
-		console.table(form_history);
-
 		$('li textarea.new').each(function(){
 
 			if (form_history[$(this).attr("breadcrumbs")]) {				
