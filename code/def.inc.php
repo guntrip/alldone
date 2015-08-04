@@ -3,7 +3,7 @@
 include "code/functions.global.php";
 include "code/functions.sql.php";
 include "code/functions.file.php";
-include "code/pass.php";
+include "../alldone.io.pass/pass.php";
 
 $this_server=["id"=>0, "saving_server"=>0, "saving_store"=>0];
 
