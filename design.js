@@ -1,4 +1,4 @@
-var current_hover=0, label_mousedown=false;
+var current_hover=0, label_mousedown=false, clickcount=0;
 /* sizeup =============================== */
 var blahblahblah=false;
 
@@ -6,6 +6,7 @@ function sizeup() {
 
 	var scale_by=screenmode();
 
+	// horizontal
 	if (user_options.mode!=='vertical') {
 
 		// 1/3 for individual lists
@@ -20,8 +21,15 @@ function sizeup() {
 			$('body').removeClass('vertical');
 		}
 
+		// inputs
+		var inputWidth=newWidth-100;
+		$('input.edit, input.new').width(inputWidth-50); // allow for the icon!
+		$('textarea.edit, textarea.new').width(inputWidth);
+		$('li label').width(inputWidth);
+
 	}
 
+	// vertical
 	if (user_options.mode==='vertical') {
 
 		var newWidth = ($(window).width())-(vert_indent*4);
@@ -30,14 +38,16 @@ function sizeup() {
 			$('body').addClass('vertical');
 			$('#wrapper').width('100%');
 		}
-	}
 
-	// inputs
-	var inputWidth=newWidth-100;
-	$('input.edit, input.new').width(inputWidth-50); // allow for the icon!
-	$('textarea.edit, textarea.new').width(inputWidth);
-	$('li label').width(inputWidth); 
+		$('input.edit, input.new').width(newWidth - 130);
 
+		for (i = 1; i < 6; i++) {
+			$('ul.crumbs-'+i+' textarea.edit, ul.crumbs-'+i+' textarea.new').width(newWidth - 130 - (vert_indent*i));
+			$('ul.crumbs-'+i+' li label').width(newWidth - 130 - (vert_indent*i));
+		}
+
+	} 
+	
 }
 
 
@@ -331,16 +341,48 @@ function assign_clicks() {
 
 	} else {
 
-		// Expand/close labels
-		$( 'li label' ).not('li.open label, li.static').click(function() {					
-			expand($(this).parent());
-		});
-		$( 'li.open label' ).not('li.static').click(function() {	
-			
-			close($(this).parent());
+		// Expand/long-press edit
+		$( 'li label' ).not('li.open label, li.static').on("mousedown touchstart", function() {					
+			var d = new Date();
+    		clickcount = d.getTime();			
 		});
 
-		// Expand close li, but not children
+				$( 'li label' ).not('li.open label, li.static').on("mouseup touchend", function() {					
+					//
+					var d = new Date();
+		    		
+					if ((d.getTime()-clickcount)>450) {
+						modify(this);
+					} else {
+						expand($(this).parent());
+					}
+
+					clickcount=0;
+
+				});
+
+		// Close/long-press edit
+		$( 'li.open label' ).not('li.static').on("mousedown touchstart", function() {					
+			var d = new Date();
+    		clickcount = d.getTime();			
+		});
+
+				$( 'li.open label' ).not('li.static').on("mouseup touchend", function() {					
+			
+					var d = new Date();
+		    		
+					if ((d.getTime()-clickcount)>450) {
+						modify(this);
+					} else {
+						close($(this).parent());
+					}
+
+					clickcount=0;
+
+				});
+
+
+		// Expand close li, but not children. No long click on these.
 		$( 'li' ).not('li.open, li.static').click(function(){
 			expand($(this));
 		}).children().click(function(e) {
