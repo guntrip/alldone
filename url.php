@@ -20,7 +20,7 @@ $loginRequired=false;
 
 // Strip local server directory
 if ( $useServer == "local" ) {
-    $requesturl = str_replace("todo/", "", $requesturl);  // incase this is the local version running.	   
+    $requesturl = str_replace("alldone.io/", "", $requesturl);  // incase this is the local version running.	   
 }
 
 // Treat ? as further url slashes

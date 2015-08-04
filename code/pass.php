@@ -7,21 +7,23 @@
 
 */
 
-$localip="255.255.255.0";
+$localip="82.8.225.110";
 
 $serversBase["remote"]=array();
 $serversBase["remote"]["server"]="localhost";
-$serversBase["remote"]["username"]="";
-$serversBase["remote"]["password"]="";
-$serversBase["remote"]["database"]="";
+$serversBase["remote"]["username"]="alldone";
+$serversBase["remote"]["password"]="doneduck323";
+$serversBase["remote"]["database"]="alldone";
 $serversBase["remote"]["ml"]="http://www.alldone.io/";
+$serversBase["remote"]["mobMl"]="http://m.alldone.io/";
 $serversBase["remote"]["http"]="http://www.alldone.io/";
 
 $serversBase["local"]=array();
 $serversBase["local"]["server"]="localhost";
-$serversBase["local"]["username"]="";
-$serversBase["local"]["password"]="";
-$serversBase["local"]["database"]="";	
+$serversBase["local"]["username"]="steve";
+$serversBase["local"]["password"]="bertfish13";
+$serversBase["local"]["database"]="alldone";	
+$serversBase["local"]["ml"]="http://".$localip."/alldone.io/";
 $serversBase["local"]["mobMl"]="http://".$localip."/alldone.io/";
 $serversBase["local"]["secure"]="http://".$localip."/alldone.io/";
 
