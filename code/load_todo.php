@@ -8,14 +8,20 @@
  *
  */
 
+$load_script="<script>var load_from_var=true;\n".
+			 "var load_item=".($load_list["data"]).";\n".
+			 "var load_owner='".$load_list["owner"]."';\n".
+			 "var load_uid='".$loginInfo["uid"]."';\n".
+			 "var load_title='".$load_list["uri"]."';\n".
+			 "var load_permission='".$load_list["permission"]."';\n".
+			 "</script>";
 
-
-$load_script="<script>var load_from_var=true;".
-			 "var load_item=".($load_list["data"]).";".
-			 "var load_owner='".$load_list["owner"]."';".
-			 "var load_uid='".$loginInfo["uid"]."';".
-			 "var load_title='".$load_list["uri"]."';".
-			 "var load_permission='".$load_list["permission"]."';</script>";
+if ($useServer=="local") {
+	$local_script.="var localmode=true;\n";
+	$local_script.="var localmode_ip='".$localip."';\n";
+} else {
+	$local_script.="var localmode=false;\n";
+}
 
 // todo.php modded below:
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -28,6 +34,7 @@ $load_script="<script>var load_from_var=true;".
 <link rel="stylesheet" href="<?php echo $ml; ?>style.css" type="text/css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script type="text/javascript"><?php echo $local_script; ?></script>
 <?php
 
 	if (($useServer=="local")&&($_GET["forceMin"]!="true")) {

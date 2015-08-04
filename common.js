@@ -1,13 +1,14 @@
 /* loadermabobs */
 var login={};
 
+if (localmode) {
+  var uri='http://'+localmode_ip+'/alldone.io/api/';
+  var homeuri='http://'+localmode_ip+'/alldone.io/';
+} else {
+  var uri='http://www.alldone.io/api/';
+  var homeuri='http://www.alldone.io/';
+}
 
-//var uri='http://82.8.225.110/alldone.io/api/';
-var uri='http://82.8.225.110/alldone.io/api/';
-
-
-//var uri='http://www.alldone.io/api/';
-var homeuri='http://www.alldone.io/';
 var update_notify_count=0;
 var runtime='none';
 
