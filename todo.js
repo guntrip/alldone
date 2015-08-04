@@ -255,7 +255,7 @@ function draw_list(crumbs) {
 
 				var html = "<li id=\"vert-crumbs-"+(crumbIndexIncrem)+"\">";
 
-				html += "<ul class=\"list vertical\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bc+"\">";
+				html += "<ul class=\"list vertical crumbs-"+(crumbIndexIncrem)+"\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bc+"\">";
 			
 				$.each(item.children, function (key, value) {
 
