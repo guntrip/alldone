@@ -39,7 +39,7 @@ function sizeup() {
 			$('#wrapper').width('100%');
 		}
 
-		$('input.edit, input.new').width(newWidth - 130);
+		$('textarea.edit, textarea.new').width(newWidth - 130);
 
 		for (i = 1; i < 6; i++) {
 			$('ul.crumbs-'+i+' textarea.edit, ul.crumbs-'+i+' textarea.new').width(newWidth - 130 - (vert_indent*i));

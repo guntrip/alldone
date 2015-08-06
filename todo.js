@@ -274,7 +274,7 @@ function draw_list(crumbs) {
 
 				var html = "<li id=\"vert-crumbs-"+(crumbIndexIncrem)+"\">";
 
-				html += "<ul class=\"list vertical crumbs-"+(crumbIndexIncrem)+"\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bc+"\">";
+				html += "<ul class=\"list vertical crumbs-"+(crumbIndexIncrem)+"\" style=\"margin-left: "+(vert_indent)+"px;\" id=\"crumbs-"+(crumbIndexIncrem)+"\" breadcrumbs=\""+text_bcIncrem+"\">";
 			
 				$.each(item.children, function (key, value) {
 
@@ -564,7 +564,7 @@ function add(e) {
 
 				// Set callback for focusing
 				callback(true, {method:'focus_new', id:parent_ul});	
-
+		
 			var id_split = id.split("-");
 			var bc_location=id_split[1]; // What breadcrumb step.
 
